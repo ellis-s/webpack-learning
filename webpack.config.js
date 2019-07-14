@@ -11,5 +11,17 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
     filename: '[name].js'
   },
-  mode: 'production'
+  modules: {
+    rules: [
+      // test 指定匹配规则
+      // use 指定使用的loader名称
+      {test: /\.txt$/, use: 'raw-loader'}
+    ]
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html'
+    })
+  ],
+  mode: 'production',
 }
