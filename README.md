@@ -2,7 +2,7 @@
 跟着极客学习webpack
 
 ## Day 1
----
+
 1. 安装nvm
 2. 安装node&npm
 3. 本地新建wepack-learning文件夹
@@ -17,7 +17,7 @@
 ```
 
 ## Day 2
----
+
 1. 配置package.json 里面的scripts: ``` "build": "webpack" ```;可以通过 ```npm run build``` 代替 ./node_modules/.bin/webpack 执行打包。
 2. entry 可以接收一个对象，通过键值对的形式配置多个打包入口，output没有多个出口的概念。通过[name].js 占位符的形式保证输出的文件名和入口文件的key值保持一致。
 3. 常见的Loaders有哪些
@@ -37,8 +37,8 @@
 6. 任何Loaders不能完成的，都可以用Plugins去完成。
 7. 常见的Plugins：
 
-  名称 | 描述
-  - | -
+  名称|描述
+  -|-
   CommonsChunckPlugin | 将chunks相同的模块代码提取成公共的js
   CleanWebpackPlugin | 清理构建目录
   ExtractTextWebpackPlugin | 将CSS从bundle文件里提取成一个独立的css文件
