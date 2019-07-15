@@ -56,3 +56,63 @@
   production| 设置 ```process.env.NODE_ENV```的值为```production``` 开启 ```FlagDependencyUsagePlugin,FlagIncludedChunksPlugin,ModuleConcatenationPlugin,NoEmitOnErrorsPlugin,OccurrenceOrderPlugin,SideEffectsFlagPlugin和TerserPlugin```
   none | 不开启任何优化选项
 
+## Day 3
+
+### 1. webpack 中使用 ES6.
+
+首先要解析ES6
+
+使用 babel-loader，babel的配置文件是： .babelrc
+
+.babelrc
+```
+{
+  "presets": [ // preset 是一些列babel plugins的一个集合
++   "@babel/preset-env" // 这行是 ES6 的 babel preset 配置
+  ],
+  "plugins": [ // 一个 plugin 对应一个功能。
+    "@babel/proposal-class-properties"
+  ]
+}
+```
+webpack.config.js
+```
+  const path = require('path');
+  module.exports = {
+    entry: './src/index.js',
+    output: {
+      filename: 'bundle.js',
+      path: path.resolve(__dirname, 'dist')
+    },
+    module: {
+      rule: [
+        {
+          test: /\.js$/,
+          use: 'babel-loader'
+        }
+      ]
+    }
+  }
+```
+安装babel相关的loaders：
+```
+npm i @babel/core @bable/preset-env babel-loader -D
+// i => install
+// -D => --save-dev
+```
+
+### 2. 解析 React JSX
+
+在.babelrc文件中新增 ```"@babel/preset-react"```
+.babelrc
+```
+{
+  "presets": [
+    "@babel/preset-env",
++   "@babel/preset-react"
+  ],
+  "plugins": [
+    "@babel/proposal-class-properties"
+  ]
+}
+```
