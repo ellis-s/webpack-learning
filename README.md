@@ -220,3 +220,53 @@ module: {
 ```
 
 第四步：执行```npm run build```
+
+## Day4
+
+### 1. 解析图片
+
+> 使用 file-loader 处理文件
+
+1. 安装依赖``` npm i file-loader -D ```
+2. 在webpack.config.js文件中新增配置
+
+```
+  module: {
+    rules: [
+      ...
+      {
+        test: /.(png|jpe?g|gif)$/,
+        use: 'file-loader'
+      }
+    ]
+  }
+```
+3. 在search.js中新增代码：
+```
+'use strict';
+
+import React from 'react';
+import ReactDom from 'react-dom';
+import zipcy from './image/zipcy01.jpg';
+import './search.less';
+
+class Search extends React.Component {
+
+  render() {
+    return <div class="search-text">
+              Search Text
++             <img src={zipcy} />
+           </div>;
+  }
+
+}
+
+ReactDom.render(
+  <Search />,
+  document.getElementById('root')
+);
+```
+
+### 解析字体
+
+> file-laoder 也可以解析字体
