@@ -103,7 +103,7 @@ npm i @babel/core @bable/preset-env babel-loader -D
 
 ### 2. 解析 React JSX
 
-在.babelrc文件中新增 ```"@babel/preset-react"```
+首先在.babelrc文件中新增 ```"@babel/preset-react"```
 .babelrc
 ```
 {
@@ -116,3 +116,107 @@ npm i @babel/core @bable/preset-env babel-loader -D
   ]
 }
 ```
+其次，安装react、react-dom和@bable/preset-react
+```
+npm i react react-dom @bable/preset-react -D
+```
+然后再在search.js中写入以下代码：
+```
+'use strict';
+
+import React from 'react';
+import ReactDom from 'react-dom';
+
+class Search extends React.Component {
+
+  render() {
+    return <div>Search Text</div>;
+  }
+
+}
+
+ReactDom.render(
+  <Search />,
+  document.getElementById('root')
+);
+```
+再新建一个 search.html 文件
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+  <div id="root"></div>
+
+  <script src="./search.js" type="text/javascript"></script>
+</body>
+</html>
+```
+最后执行打包： ```npm run build```, 在浏览器中打开search.html就可以看到```Search Text```内容
+
+### 3. 解析CSS
+
+> - css-loader 用于加载 .css文件，并且转换成 commonjs 对象
+> - style-loader 将样式通过```<style>```标签插入到head中
+
+第一步：安装依赖
+``` npm i style-loader css-loader -D ```
+
+第二步：新建search.css文件
+
+第三步：在search.js中引入search.css文件
+```
+import './search.css';
+```
+
+第四步：在webpack.config.js 中新增css的解析
+```
+module: {
+  rules: [
+    ...
+    {
+      test: /.css$/,
+      use: [
+        'style-loader',
+        'css-loader'
+      ]
+    }
+  ]
+}
+
+// 注意：loader的调用是链式的调用。执行顺序是从右到左的。
+// 因此，是先执行css-loader，解析css。然后再把解析好的css传递给style-loader,最后插入到head中。
+```
+
+### 解析 LESS & SaSS
+
+> less-loader 用于将 less 转换成 css
+
+第一步：安装依赖 ``` npm i less less-loader -D ```
+
+第二步：修改search.css 后缀名为 .less， 修改search.js中的引入。改成```import './search.less' ```
+
+第三步：在 webpack.config.js 中新增对less文件的loader
+
+```
+module: {
+  rules: [
+    {
+      test: /.less$/,
+      use: [
+        'style-loader',
+        'css-loader',
+        'less-loader'
+      ]
+    }
+  ]
+}
+```
+
+第四步：执行```npm run build```
