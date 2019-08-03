@@ -271,5 +271,19 @@ ReactDom.render(
 
 > file-laoder 也可以解析字体
 
+```
+// search.less
+@font-face{
+  font-family: 'tengxiang';
+  src: url('./fonts/tengxiang-light.ttf)
+}
 
-123123
+// webpack.config.js
+rules: {
+  {
+    test: /.(woff|woff2|eot|ttf|otf)$/,
+    use: 'file-loader'
+  }
+}
+
+```

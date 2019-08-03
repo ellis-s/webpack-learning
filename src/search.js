@@ -20,3 +20,4 @@ ReactDom.render(
   <Search />,
   document.getElementById('root')
 );
+
