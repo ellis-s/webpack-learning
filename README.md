@@ -267,23 +267,62 @@ ReactDom.render(
 );
 ```
 
-### 解析字体
+### 2. 解析字体
 
 > file-laoder 也可以解析字体
 
-```
 // search.less
+``` less
 @font-face{
   font-family: 'tengxiang';
-  src: url('./fonts/tengxiang-light.ttf)
+  src: url('./fonts/tengxiang-light.ttf')
 }
 
-// webpack.config.js
+.search-text{
+  font-size: 25px;
+  color: red;
+  font-family: 'tengxiang'
+}
+```
+webpack.config.js 配置字体解析
+``` javascript
 rules: {
   {
     test: /.(woff|woff2|eot|ttf|otf)$/,
     use: 'file-loader'
   }
 }
-
 ```
+
+## Day5
+
+### 1. 资源解析： 使用url-loader
+
+> url-loader 也可以处理图片和字体。
+
+  
+> 可以设置较小资源自动 base64
+
+安装url-loader依赖
+```bash
+npm i url-loader -D
+```
+在webpack.config.js中配置
+```javascript
+{
+  test: /.(jpg|png|jpeg|gif)$/,
+  use: [
+    {
+      laoder: 'url-loader',
+      options: {
+        limit: 1024000 //单位是字节（Bytes）1024Bytes = 1KB;1024KB = 1MB;...
+        // 图片小于 大约 1MB的自动转换成base64格式
+      }
+    }
+  ]
+}
+```
+配置好后，直接运行打包即可：
+```npm run build```；然后在浏览器可以看到图片的src内容变成了base64格式。
+
+如果细心点，你可以在终端里发现，打包信息中少了图片的文件，而引用这个图片的js文件Size会变大，变化的大小和图片大小差不多一样。
