@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   entry: {
@@ -11,6 +12,7 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
     filename: '[name].js'
   },
+  mode: 'development',
   module: {
     rules: [
       {
@@ -51,5 +53,11 @@ module.exports = {
       },
     ]
   },
-  mode: 'production',
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()// 热更新插件
+  ],
+  devServer: {
+    contentBase: './dist',
+    hot: true
+  }
 }

@@ -65,7 +65,7 @@
 使用 babel-loader，babel的配置文件是： .babelrc
 
 .babelrc
-```
+```json
 {
   "presets": [ // preset 是一些列babel plugins的一个集合
 +   "@babel/preset-env" // 这行是 ES6 的 babel preset 配置
@@ -76,26 +76,26 @@
 }
 ```
 webpack.config.js
-```
-  const path = require('path');
-  module.exports = {
-    entry: './src/index.js',
-    output: {
-      filename: 'bundle.js',
-      path: path.resolve(__dirname, 'dist')
-    },
-    module: {
-      rule: [
-        {
-          test: /\.js$/,
-          use: 'babel-loader'
-        }
-      ]
-    }
+```javascript
+const path = require('path');
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
+  module: {
+    rule: [
+      {
+        test: /\.js$/,
+        use: 'babel-loader'
+      }
+    ]
   }
+}
 ```
 安装babel相关的loaders：
-```
+```bash
 npm i @babel/core @bable/preset-env babel-loader -D
 // i => install
 // -D => --save-dev
@@ -105,7 +105,7 @@ npm i @babel/core @bable/preset-env babel-loader -D
 
 首先在.babelrc文件中新增 ```"@babel/preset-react"```
 .babelrc
-```
+```json
 {
   "presets": [
     "@babel/preset-env",
@@ -117,11 +117,11 @@ npm i @babel/core @bable/preset-env babel-loader -D
 }
 ```
 其次，安装react、react-dom和@bable/preset-react
-```
+```bash
 npm i react react-dom @bable/preset-react -D
 ```
 然后再在search.js中写入以下代码：
-```
+```javascript
 'use strict';
 
 import React from 'react';
@@ -141,7 +141,7 @@ ReactDom.render(
 );
 ```
 再新建一个 search.html 文件
-```
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -176,7 +176,7 @@ import './search.css';
 ```
 
 第四步：在webpack.config.js 中新增css的解析
-```
+```javascript
 module: {
   rules: [
     ...
@@ -204,7 +204,7 @@ module: {
 
 第三步：在 webpack.config.js 中新增对less文件的loader
 
-```
+```javascript
 module: {
   rules: [
     {
@@ -230,7 +230,7 @@ module: {
 1. 安装依赖``` npm i file-loader -D ```
 2. 在webpack.config.js文件中新增配置
 
-```
+```js
   module: {
     rules: [
       ...
@@ -242,7 +242,7 @@ module: {
   }
 ```
 3. 在search.js中新增代码：
-```
+```js
 'use strict';
 
 import React from 'react';
@@ -269,7 +269,7 @@ ReactDom.render(
 
 ### 2. 解析字体
 
-> file-laoder 也可以解析字体
+> file-loader 也可以解析字体
 
 // search.less
 ``` less
@@ -326,3 +326,47 @@ npm i url-loader -D
 ```npm run build```；然后在浏览器可以看到图片的src内容变成了base64格式。
 
 如果细心点，你可以在终端里发现，打包信息中少了图片的文件，而引用这个图片的js文件Size会变大，变化的大小和图片大小差不多一样。
+
+---
+
+## 6. webpack - 文件监听
+
+> 文件监听是在发现源代码发生变化时，自动重新构建出新的输出文件；
+
+> 直白点讲就是：每次修改代码并保存后，让 webpack 代替手动执行 npm run build 命令，以达到自动把源代码打包成 bundle.js 的目标。
+
+> 实现原理：轮询判断文件的最后编辑时间是否变化。如果某个文件发生了变化，并不会立即告诉监听者，而是先缓存起来，等 aggregateTimeout 参数，等完之后呢，再去执行。
+  
+> 唯一缺点：在构建完成后，需要手动刷新浏览器，以更新显示构建后的文件。
+
+webpack 开启监听模式的方式：
+1. 启动 webpack 命令时，带上 --watch 参数
+2. 在配置 webpack.config.js 中设置 watch: true
+
+file package.json
+```json
+// 在 scripts 里面新加下面一行命令
+"scripts": {
+  "watch": "webpack --watch",
+}
+```
+接下来，在终端运行 ``` npm run watch ```，就可以看到 ```webpack is watching the files...```
+
+在 webpack.config.js 中的配置：
+``` javascript
+module.export = {
+  watch: true, // 默认 false，也就是不开启
+  watchOptions: {
+    ignored: /node_module/, // 默认为空，不监听的文件或者文件夹，支持正则匹配
+    aggregateTimeout: 300, // 监听到变化发生后会等 300ms 再去执行，默认300ms
+    poll: 1000 //判断文件是否发生变化是通过不停询问系统指定文件有没有发生变化实现的，默认每秒问1000次
+  }
+}
+```
+## 7. 热更新： webpack-dev-server
+
+> 特点： 1. 不刷新浏览器；2.不输出文件，而是放在内存中；
+
+>  配合 HotModuleReplacementPlugin 插件使用；
+
+
