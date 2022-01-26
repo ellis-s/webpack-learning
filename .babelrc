@@ -1,0 +1,6 @@
+{
+  "presets": [
+    "@babel/preset-env", // 把 es6+ 语法转换成 es5 的语法
+    "@babel/preset-react" // 把 jsx 语法转成 js 代码
+  ]
+}
