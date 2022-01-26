@@ -1,3 +1,3 @@
-import {helloworld} from './helloworld';
-
-document.write(helloworld())
+const foo = () => {
+  return 'bar';
+}
